@@ -2,9 +2,9 @@ services:
   app:
     build: .
     environment:
-      - SPRING_DATASOURSE_URL=jdbc:postgresql://db:5432/esbd
-      - SPRING_DATASOURSE_USERNAME=server
-      - SPRING_DATASOURSE_PASSWORD=admin
+      - SPRING_DATASOURSE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURSE_USERNAME=postgres
+      - SPRING_DATASOURSE_PASSWORD=saturday1Spring
     ports:
       - "8080:8080"
     depends_on:
@@ -13,9 +13,9 @@ services:
     container_name: app_test
     image: postgres
     environment:
-      POSTGRES_USER: server
-      POSTGRES_PASWORD: admin
-      POSTGRES_DB: esbd
+      POSTGRES_USER: postgres
+      POSTGRES_PASWORD: saturday1Spring
+      POSTGRES_DB: postgres
       PGDATA: /data/postgres
     volumes:
       - db:/data/postgres
