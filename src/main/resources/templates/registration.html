@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <style>
+        /* style.css */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-container {
+            background-color: #fff;
+            width: 360px;
+            margin: 80px auto;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #4CAF50; /* Facebook blue color */
+        }
+
+        input[type="text"],
+        input[type="password"],
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #4CAF50;
+        }
+
+        #registration-message {
+            color: #ff0000; /* Red color for error message */
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Регистрация</h2>
+    <form id="registration-form">
+        <input type="text" id="username" placeholder="Имя пользователя">
+        <input type="password" id="password" placeholder="Пароль">
+        <input type="text" id="lname" placeholder="Фамилия">
+        <input type="text" id="fname" placeholder="Имя">
+        <input type="text" id="email" placeholder="Email">
+        <!-- Скрытое поле для хранения идентификатора пользователя -->
+        <input type="hidden" id="userId">
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    <p id="registration-message"></p>
+</div>
+
+<script>
+    document.getElementById("registration-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var lname = document.getElementById("lname").value;
+        var fname = document.getElementById("fname").value;
+        var email = document.getElementById("email").value;
+
+        // Создаем объект Buyer
+        var buyer = {
+            login: username,
+            password: password,
+            lname: lname,
+            fname: fname,
+            email: email
+        };
+
+        // Отправляем AJAX-запрос на сервер для регистрации нового пользователя
+        registerUser(buyer);
+    });
+
+    function registerUser(buyer) {
+        // Отправляем AJAX-запрос на сервер для регистрации нового пользователя
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/buyers/registration", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function() {
+            if (xhr.status === 201) {
+                // Выводим сообщение о успешной регистрации
+                document.getElementById("registration-message").innerText = "Пользователь успешно зарегистрирован";
+            } else {
+                // Выводим сообщение об ошибке регистрации
+                document.getElementById("registration-message").innerText = "Ошибка при регистрации пользователя";
+            }
+        };
+        xhr.send(JSON.stringify(buyer));
+    }
+
+</script>
+
+</body>
+</html>

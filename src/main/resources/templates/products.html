@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Продукты</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Стили для формы */
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<h1>Продукты</h1>
+<h2>Просмотр продуктов</h2>
+
+<table>
+    <tr>
+        <th>ID продукта</th>
+        <th>Марка мотоцикла</th>
+        <th>Модель</th>
+        <th>Год выпуска</th>
+        <th>Цена продукта</th>
+        <th>Действия</th> <!-- Новый заголовок для столбца с кнопкой удаления -->
+    </tr>
+    <tr th:each="p: ${products}" >
+        <td th:if="${p.id}" th:text="${p.id}"></td>
+        <td th:text="${p.brand}"></td>
+        <td th:text="${p.model}"></td>
+        <td th:text="${p.generation}"></td>
+        <td th:text="${p.price}"></td>
+        <td>
+            <!-- Форма для удаления продукта -->
+            <form th:action="@{/products/delete/{id}(id=${p.id})}" method="post">
+                <input type="hidden" name="_method" value="delete"/>
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<h2>Добавить продукт</h2>
+<form action="/products" method="post">
+    <label>
+        Марка мотоцикла:
+        <select name="brand" id="brand" onchange="updateModels()">
+            <option value="Harley-Davidson">Harley-Davidson</option>
+            <option value="Honda">Honda</option>
+            <option value="Yamaha">Yamaha</option>
+            <option value="Kawasaki">Kawasaki</option>
+            <option value="Suzuki">Suzuki</option>
+        </select>
+    </label>
+    <br />
+    <label>
+        Модель:
+        <select name="model" id="model">
+            <!-- Модели будут отображаться динамически -->
+        </select>
+    </label>
+    <br />
+    <label>
+        Год выпуска:
+        <input type="text" name="generation" />
+    </label>
+    <br />
+    <label>
+        Цена:
+        <input type="number" step="any" name="price" />
+    </label>
+    <br />
+    <label>
+        <input type="hidden" name="id" value="" />
+    </label>
+    <br />
+    <button type="submit">Добавить продукт</button>
+</form>
+
+<script>
+    const modelsByBrand = {
+        "Harley-Davidson": ["Sportster", "Softail", "Touring"],
+        "Honda": ["CBR", "Gold Wing", "CRF"],
+        "Yamaha": ["YZF-R", "MT", "XSR"],
+        "Kawasaki": ["Ninja", "Z", "Versys"],
+        "Suzuki": ["GSX-R", "Hayabusa", "V-Strom"]
+    };
+
+    function updateModels() {
+        const selectedBrand = document.getElementById("brand").value;
+        const models = modelsByBrand[selectedBrand];
+        const modelSelect = document.getElementById("model");
+        modelSelect.innerHTML = ""; // Очистить существующие варианты
+        models.forEach(model => {
+            const option = document.createElement("option");
+            option.text = model;
+            option.value = model;
+            modelSelect.appendChild(option);
+        });
+    }
+
+    // Вызвать updateModels изначально для заполнения моделей для выбранной марки по умолчанию
+    updateModels();
+</script>
+</body>
+</html>

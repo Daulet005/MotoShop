@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <style>
+        /* style.css */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-container {
+            background-color: #fff;
+            width: 360px;
+            margin: 80px auto;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #4CAF50; /* Facebook blue color */
+        }
+
+        input[type="text"],
+        input[type="password"],
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #4CAF50;
+        }
+
+        #login-message {
+            color: #ff0000; /* Red color for error message */
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <h2>Войти</h2>
+    <form id="login-form">
+        <input type="text" id="username" placeholder="Имя пользователя">
+        <input type="password" id="password" placeholder="Пароль">
+        <button type="submit">Войти</button>
+    </form>
+    <button id="register-btn">Зарегистрироваться</button>
+    <p id="login-message"></p>
+</div>
+
+<script>
+    document.getElementById("login-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+        // Получаем значения логина и пароля
+        var login = document.getElementById("login").value;
+        var password = document.getElementById("password").value;
+
+        // Создаем объект XMLHttpRequest для отправки AJAX-запроса
+        var xhr = new XMLHttpRequest();
+
+        // Отправляем POST-запрос на сервер для проверки учетных данных
+        xhr.open("POST", "/check-login", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        // Обработка ответа от сервера
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Если ответ успешный, перенаправляем на страницу products2.html
+                window.location.href = "products2.html";
+            } else {
+                // Если ответ содержит ошибку, выводим сообщение об ошибке
+                document.getElementById("login-message").textContent = "Неверное имя пользователя или пароль";
+            }
+        };
+
+        // Преобразуем данные в формат JSON и отправляем на сервер
+        var buyer = JSON.stringify({login: login, password: password});
+        xhr.send(buyer);
+    });
+
+</script>
+
+</body>
+</html>

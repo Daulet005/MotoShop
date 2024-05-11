@@ -1,0 +1,24 @@
+services:
+  app:
+    build: .
+    environment:
+      - SPRING_DATASOURSE_URL=jdbc:postgresql://db:5432/esbd
+      - SPRING_DATASOURSE_USERNAME=server
+      - SPRING_DATASOURSE_PASSWORD=admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+  db:
+    container_name: app_test
+    image: postgres
+    environment:
+      POSTGRES_USER: server
+      POSTGRES_PASWORD: admin
+      POSTGRES_DB: esbd
+      PGDATA: /data/postgres
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5432:5432"
+    restart: unless-stopped

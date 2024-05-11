@@ -1,0 +1,11 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    data-class-name: org.postgresql.Driver
+    username: postgres
+    password: saturday1Spring
+    url: jdbc:postgresql://localhost:5432/postgres
+  jpa:
+    hibernate:
+      ddl-auto: update

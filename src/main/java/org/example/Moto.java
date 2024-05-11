@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component("beanFromClass")
 public class Moto {
 
@@ -40,5 +42,9 @@ public class Moto {
 
     public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
+    }
+
+    public boolean add(List<Moto> motos) {
+        return false;
     }
 }
