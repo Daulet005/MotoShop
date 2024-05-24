@@ -5,6 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+import java.util.List;
+
 @Controller
 public class ProductsController {
     private final ProductService productService;
@@ -15,9 +18,9 @@ public class ProductsController {
 
     @GetMapping("/products")
     public String viewProducts(Model model) {
-        var products = productService.findAll();
+        List<Product> products = productService.getAllProducts();
         model.addAttribute("products", products);
-        return "products.html";
+        return "products"; // Имя представления каталога товаров
     }
 
     @PostMapping("/products")
@@ -45,4 +48,5 @@ public class ProductsController {
         redirectAttributes.addFlashAttribute("successMessage", "Продукт успешно удален");
         return "redirect:/products";
     }
+
 }

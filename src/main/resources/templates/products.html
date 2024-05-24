@@ -4,49 +4,103 @@
     <meta charset="UTF-8">
     <title>Продукты</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         th, td {
             border: 1px solid #dddddd;
             text-align: left;
-            padding: 8px;
+            padding: 12px;
+            font-size: 16px;
         }
 
         th {
+            background-color: #e01533;
+            color: white;
+        }
+
+        tr:nth-child(even) {
             background-color: #f2f2f2;
         }
 
-        /* Стили для формы */
         form {
             margin-top: 20px;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            margin-bottom: 15px;
+            width: 100%;
         }
 
         input[type="text"],
-        input[type="number"] {
+        input[type="number"],
+        select {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
+            padding: 10px;
+            margin-top: 5px;
             box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
 
-        button[type="submit"] {
+        button[type="submit"],
+        .delete-button {
             background-color: #4CAF50;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 16px;
         }
 
-        button[type="submit"]:hover {
+        button[type="submit"]:hover,
+        .delete-button:hover {
             background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        button[type="submit1"] {
+            background-color: #e01533;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 16px;
+        }
+
+        button[type="submit1"]:hover {
+            background-color: #c0132d;
+            transform: scale(1.05);
+        }
+
+        .motorcycle-image {
+            max-width: 100px;
+            height: auto;
         }
     </style>
 </head>
@@ -61,7 +115,7 @@
         <th>Модель</th>
         <th>Год выпуска</th>
         <th>Цена продукта</th>
-        <th>Действия</th> <!-- Новый заголовок для столбца с кнопкой удаления -->
+        <th>Действия</th>
     </tr>
     <tr th:each="p: ${products}" >
         <td th:if="${p.id}" th:text="${p.id}"></td>
@@ -70,14 +124,14 @@
         <td th:text="${p.generation}"></td>
         <td th:text="${p.price}"></td>
         <td>
-            <!-- Форма для удаления продукта -->
-            <form th:action="@{/products/delete/{id}(id=${p.id})}" method="post">
+            <form onsubmit="return confirm('Действительно ли вы хотите удалить объект?');" th:action="@{/products/delete/{id}(id=${p.id})}" method="post">
                 <input type="hidden" name="_method" value="delete"/>
-                <button type="submit">Удалить</button>
+                <button type="submit1" class="delete-button">Удалить</button>
             </form>
         </td>
     </tr>
 </table>
+
 <h2>Добавить продукт</h2>
 <form action="/products" method="post">
     <label>
@@ -90,28 +144,21 @@
             <option value="Suzuki">Suzuki</option>
         </select>
     </label>
-    <br />
     <label>
         Модель:
-        <select name="model" id="model">
-            <!-- Модели будут отображаться динамически -->
-        </select>
+        <select name="model" id="model"></select>
     </label>
-    <br />
     <label>
         Год выпуска:
         <input type="text" name="generation" />
     </label>
-    <br />
     <label>
         Цена:
         <input type="number" step="any" name="price" />
     </label>
-    <br />
     <label>
         <input type="hidden" name="id" value="" />
     </label>
-    <br />
     <button type="submit">Добавить продукт</button>
 </form>
 

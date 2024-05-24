@@ -1,24 +1,30 @@
+version: '3.8'  # Убедитесь, что указана правильная версия
+
 services:
   app:
     build: .
     environment:
-      - SPRING_DATASOURSE_URL=jdbc:postgresql://db:5432/postgres
-      - SPRING_DATASOURSE_USERNAME=postgres
-      - SPRING_DATASOURSE_PASSWORD=saturday1Spring
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres  # Поменяйте порт обратно на 5432
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=saturday1Spring
     ports:
       - "8080:8080"
     depends_on:
       - db
+
   db:
     container_name: app_test
     image: postgres
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASWORD: saturday1Spring
+      POSTGRES_PASSWORD: saturday1Spring
       POSTGRES_DB: postgres
       PGDATA: /data/postgres
     volumes:
       - db:/data/postgres
     ports:
-      - "5432:5432"
+      - "5433:5433"  # Используйте порт 5432 для внешних подключений
     restart: unless-stopped
+
+volumes:
+  db:  # Определите том

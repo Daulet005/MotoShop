@@ -2,62 +2,101 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Авторизация</title>
+    <title>Вход</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* style.css */
-
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
+            font-family: 'Roboto', sans-serif;
+            background-color: #fafafa;
             margin: 0;
             padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        .login-container {
+        .container {
             background-color: #fff;
-            width: 360px;
-            margin: 80px auto;
-            padding: 40px;
-            border-radius: 8px;
+            width: 500px; /* Увеличили ширину контейнера */
+            padding: 60px; /* Увеличили внутренний отступ */
+            border-radius: 12px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column; /* Изменили направление контейнера на вертикальное */
+            align-items: center;
+        }
+
+        .login-form {
+            width: 100%; /* Растянули форму на всю ширину контейнера */
+            margin-bottom: 20px; /* Добавили отступ снизу формы */
         }
 
         h2 {
-            margin-bottom: 20px;
-            color: #4CAF50; /* Facebook blue color */
+            color: #262626;
+            margin-bottom: 30px; /* Увеличили отступ после заголовка */
         }
 
         input[type="text"],
         input[type="password"],
         button[type="submit"] {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
+            padding: 16px; /* Увеличили внутренний отступ */
+            margin-bottom: 30px; /* Увеличили отступ между элементами */
+            border: 1px solid #dbdbdb;
             border-radius: 4px;
             box-sizing: border-box;
         }
 
         button[type="submit"] {
-            background-color: #4CAF50;
+            background-color: #0095f6;
             color: #fff;
             border: none;
+            border-radius: 4px;
             cursor: pointer;
         }
 
         button[type="submit"]:hover {
-            background-color: #4CAF50;
+            background-color: #0077c0;
         }
 
         #login-message {
-            color: #ff0000; /* Red color for error message */
+            color: #ff0000;
+            margin-top: 20px; /* Увеличили отступ сверху */
+        }
+
+        .login-image {
+            width: 100%; /* Растянули изображение на всю ширину контейнера */
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px; /* Добавили закругление правого верхнего угла */
+            overflow: hidden; /* Скрыли выход изображения за пределы контейнера */
+        }
+
+        .login-image img {
+            width: 100%;
+        }
+
+        #register-btn {
+            background-color: #0095f6;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            padding: 16px; /* Увеличили внутренний отступ */
+        }
+
+        #register-btn:hover {
+            background-color: #0077c0;
         }
     </style>
 </head>
 <body>
-<div class="login-container">
-    <h2>Войти</h2>
-    <form id="login-form">
+<div class="container">
+    <div class="login-image">
+        <img src="https://sportishka.com/uploads/posts/2022-08/1660292504_3-sportishka-com-p-sportivnie-mototsikli-yamaha-krasivo-foto-3.jpg" alt="Login Image">
+    </div>
+    <form class="login-form" id="login-form">
+        <h2>Вход</h2>
         <input type="text" id="username" placeholder="Имя пользователя">
         <input type="password" id="password" placeholder="Пароль">
         <button type="submit">Войти</button>
@@ -68,35 +107,40 @@
 
 <script>
     document.getElementById("login-form").addEventListener("submit", function(event) {
-        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
-
-        // Получаем значения логина и пароля
-        var login = document.getElementById("login").value;
+        event.preventDefault();
+        var username = document.getElementById("username").value;
         var password = document.getElementById("password").value;
 
-        // Создаем объект XMLHttpRequest для отправки AJAX-запроса
-        var xhr = new XMLHttpRequest();
-
-        // Отправляем POST-запрос на сервер для проверки учетных данных
-        xhr.open("POST", "/check-login", true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        // Обработка ответа от сервера
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                // Если ответ успешный, перенаправляем на страницу products2.html
-                window.location.href = "products2.html";
-            } else {
-                // Если ответ содержит ошибку, выводим сообщение об ошибке
-                document.getElementById("login-message").textContent = "Неверное имя пользователя или пароль";
-            }
+        // Создаем объект User
+        var user = {
+            username: username,
+            password: password
         };
 
-        // Преобразуем данные в формат JSON и отправляем на сервер
-        var buyer = JSON.stringify({login: login, password: password});
-        xhr.send(buyer);
+        // Отправляем AJAX-запрос на сервер для входа пользователя
+        loginUser(user);
     });
 
+    document.getElementById("register-btn").addEventListener("click", function() {
+        window.location.href = "/registration";
+    });
+
+    function loginUser(user) {
+        // Отправляем AJAX-запрос на сервер для входа пользователя
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/users/login", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Выводим сообщение об успешном входе
+                document.getElementById("login-message").innerText = "Вход выполнен успешно";
+            } else {
+                // Выводим сообщение об ошибке входа
+                document.getElementById("login-message").innerText = "Ошибка при входе";
+            }
+        };
+        xhr.send(JSON.stringify(user));
+    }
 </script>
 
 </body>
