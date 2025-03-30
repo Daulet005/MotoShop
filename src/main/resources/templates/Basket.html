@@ -76,28 +76,19 @@
         <th>Год выпуска</th>
         <th>Цена</th>
         <th>Количество</th>
-        <th>Удалить</th>
     </tr>
-    <tr th:each="item: ${cartItems}">
+    <tr th:each="item : ${cartItems}">
         <td th:text="${item.product.brand}"></td>
         <td th:text="${item.product.model}"></td>
         <td th:text="${item.product.generation}"></td>
         <td th:text="${item.product.price}"></td>
-        <td>
-            <form th:action="@{/cart/update/{id}(id=${item.product.id})}" method="post">
-                <input type="number" name="quantity" min="1" th:value="${item.quantity}" />
-                <button type="submit" class="update-button">Обновить</button>
-            </form>
-        </td>
-        <td>
-            <form th:action="@{/cart/remove/{id}(id=${item.product.id})}" method="post">
-                <button type="submit" class="remove-button">Удалить</button>
-            </form>
-        </td>
+        <td th:text="${item.quantity}"></td>
     </tr>
 </table>
-<form th:action="@{/checkout}" method="post">
-    <button type="submit" class="checkout-button">Оформить заказ</button>
+
+<form action="/cart/checkout" method="post">
+    <button type="submit">Оформить заказ</button>
 </form>
+
 </body>
 </html>

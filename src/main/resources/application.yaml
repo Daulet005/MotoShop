@@ -1,16 +1,18 @@
-server:
-  port: 8080
-
 spring:
+  application:
+    name: Motorcycle_Shop
+
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: saturday1Spring
+    url: jdbc:postgresql://localhost:5432/Moto_DB   # URL базы данных
+    username: postgres                              # Имя пользователя для подключения к базе
+    password: Ramazan03                             # Пароль пользователя базы данных
+    driver-class-name: org.postgresql.Driver       # Класс драйвера для PostgreSQL
+
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: update                              # Автоматическое обновление схемы базы данных при старте приложения
+    show-sql: true                                  # Показ SQL-запросов в консоли
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true                            # Форматирование SQL-запросов для улучшенной читаемости
+    database-platform: org.hibernate.dialect.PostgreSQLDialect  # Диалект для PostgreSQL

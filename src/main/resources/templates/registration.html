@@ -117,22 +117,25 @@
     });
 
     function registerUser(buyer) {
-        // Отправляем AJAX-запрос на сервер для регистрации нового пользователя
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/buyers/registration", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function() {
             if (xhr.status === 201) {
-                // Выводим сообщение о успешной регистрации
+                // Если регистрация успешна, перенаправляем на страницу входа
                 document.getElementById("registration-message").innerText = "Пользователь успешно зарегистрирован";
+                setTimeout(function() {
+                    window.location.href = "/login"; // Перенаправление на страницу входа
+                }, 2000); // Через 2 секунды редирект
             } else {
-                // Выводим сообщение об ошибке регистрации
                 document.getElementById("registration-message").innerText = "Ошибка при регистрации пользователя";
             }
         };
-        xhr.send(JSON.stringify(buyer));
+        xhr.send(JSON.stringify(buyer)); // Отправка данных
     }
 </script>
+
+
 
 </body>
 </html>
